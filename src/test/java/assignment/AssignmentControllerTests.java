@@ -37,11 +37,12 @@ public class AssignmentControllerTests {
     private MockMvc mockMvc;
 
     @Test
-    public void paramGreetingShouldReturnTailoredMessage() throws Exception {
+    public void profileShouldReturnException() throws Exception {
 
-        this.mockMvc.perform(post("/register").content("{ \"username\":\"hakan\", \"mail\":\"a@a.com\", \"password\":\"1234\" }"))
+        this.mockMvc.perform(post("/profile").header("Token", "12345"))
                 .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").value("token"));
+                .andExpect(jsonPath("$").value("Exception"));
+//                .andExpect(jsonPath("$.content").value("Exception"));
     }
 
 }

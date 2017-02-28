@@ -25,7 +25,7 @@ public class AssignmentServiceImpl implements AssignmentService {
 
     @Override
     public String getUserProfile() {
-        return null;
+        return "Exception";
     }
 
 }
