@@ -15,6 +15,9 @@
  */
 package assignment;
 
+import assignment.model.User;
+import assignment.service.AssignmentService;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -35,13 +40,27 @@ public class AssignmentControllerTests {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private AssignmentService assignmentService;
+
+    @Test
+    public void registerShouldReturnValidation() throws Exception {
+
+        User user = new User();
+        user.setUsername("aa");
+        user.setEmail("a@a.com");
+        user.setPassword("123AAA");
+        List<String> stringList = assignmentService.register(user);
+        String result = stringList.get(0);
+        Assert.assertEquals(result, "Username should be at least 3 characters.");
+    }
 
     @Test
     public void profileShouldReturnException() throws Exception {
 
-        this.mockMvc.perform(post("/profile").header("Token", "12345"))
-                .andDo(print()).andExpect(status().isOk())
-                .andExpect(jsonPath("$").value("Exception"));
+        this.mockMvc.perform(post("/profile").header("Token", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFobWV0IiwiZXhwIjoxNDg4NjcyNzg5fQ.Rm2FG_EgMmSzoEXkzMPstyn1GAzhjf3ja91cWCh90Y8"))
+                .andDo(print()).andExpect(status().isUnauthorized());
+//                .andExpect(jsonPath("$").value("JWT expired"));
 //                .andExpect(jsonPath("$.content").value("Exception"));
     }
 
