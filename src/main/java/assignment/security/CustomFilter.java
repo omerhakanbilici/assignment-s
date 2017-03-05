@@ -38,8 +38,6 @@ public class CustomFilter implements Filter {
                 User u = AssignmentServiceImpl.getRegisteredUserMap().get(usernameFromToken);
                 Authentication authentication = new UsernamePasswordAuthenticationToken(u, null, null);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-//                String responseToken = Jwt.generateToken(u);
-//                httpResponse.setHeader("Token", responseToken);
 
                 // continue thru the filter chain
                 filterChain.doFilter(servletRequest, servletResponse);
