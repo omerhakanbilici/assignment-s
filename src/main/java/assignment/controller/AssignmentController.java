@@ -1,6 +1,7 @@
 package assignment.controller;
 
 import assignment.model.User;
+import assignment.model.UserProfile;
 import assignment.service.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
@@ -18,16 +21,15 @@ public class AssignmentController {
     private AssignmentService assignmentService;
 
     @RequestMapping(method = POST, value = "/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
-        ResponseEntity<String> response;
+    public ResponseEntity register(@RequestBody User user) {
+        ResponseEntity response;
 
         try {
-            String register = assignmentService.register(user);
-            response = new ResponseEntity<String>(register, HttpStatus.OK);
+            List<String> register = assignmentService.register(user);
+            response = new ResponseEntity<>(register, HttpStatus.OK);
 
         } catch (Exception e) {
-//            logger.error("error",e);
-            response = new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            response = new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return response;
     }
@@ -38,26 +40,27 @@ public class AssignmentController {
 
         try {
             String loginToken = assignmentService.login(user);
-            response = new ResponseEntity<String>(loginToken, HttpStatus.OK);
-
+            response = new ResponseEntity<>(loginToken, HttpStatus.OK);
         } catch (Exception e) {
-//            logger.error("error",e);
-            response = new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            response = new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return response;
     }
 
     @RequestMapping(method = POST, value = "/profile")
-    public ResponseEntity<String> getUserProfile() {
-        ResponseEntity<String> response;
+    public ResponseEntity getUserProfile() {
+        ResponseEntity response;
 
         try {
-            String userProfile = assignmentService.getUserProfile();
-            response = new ResponseEntity<String>(userProfile, HttpStatus.OK);
+            UserProfile userProfile = assignmentService.getUserProfile();
+            if (userProfile != null) {
+                response = new ResponseEntity<>(userProfile, HttpStatus.OK);
+            } else {
+                response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
 
         } catch (Exception e) {
-//            logger.error("error",e);
-            response = new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            response = new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return response;
     }

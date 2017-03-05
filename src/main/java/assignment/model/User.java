@@ -5,16 +5,16 @@ package assignment.model;
  */
 public class User {
 
-    private String mail;
+    private String email;
     private String username;
     private String password;
 
-    public String getMail() {
-        return mail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getUsername() {
